@@ -12,7 +12,7 @@ import random
 
 money = 100
 
-#Modular code (functions to reduce length of overall code)
+#Modular code 
 def Option(money):
   if money > 0:
     option = input("Enter option [PLAY AGAIN = P+<ENTER>, QUIT = Q+<ENTER> ]: " + "\n")
@@ -31,25 +31,7 @@ def Option(money):
     print("You have no more money left to play!")
     exit()
 
-def show_player_cards():
-  player_counter = 0
-  print("Player's cards are:")
-  for i in player.cards:
-    print(player.cards[player_counter])
-    player_counter += 1
-  print("Player's total hand value:", player.value)
-  print()
-
-def show_dealer_cards():
-  dealer_counter = 0
-  print("Dealer's cards are:")
-  for i in dealer.cards:
-    print(dealer.cards[dealer_counter])
-    dealer_counter += 1
-  print("Dealer's total hand value:", dealer.value)
-  print()
-
-# Created Standard Deck of 52 cards and Player / Dealer hands using Classes
+# Created Standard Deck of 52 cards (excluding Joker Cards) in a dictionary (name = key, number = value)
 
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
@@ -102,7 +84,7 @@ def Blackjack(money):
       Blackjack(money)
     else:
       bet = float(bet)
-    if bet <= money:
+    if ((bet <= money) and (bet > 0)):
       print()
       a += 1
     else:
@@ -110,7 +92,7 @@ def Blackjack(money):
       print()
   
   
-  # Dealing Cards for Player - deals 2 starting cards to the player
+  # Dealing Cards Method - deals starting 2 cards to the player and dealer in two lists (one contains the name of cards, the other contains the values) a dictionary is created to keep track of all cards drawn in the game
 
   deck = Deck()
   deck.shuffle()
@@ -122,9 +104,15 @@ def Blackjack(money):
   player.add_card(deck.deal())
   player.add_card(deck.deal())
 
-  show_player_cards()
+  player_counter = 0
+  print("Player's cards are:")
+  for i in player.cards:
+    print(player.cards[player_counter])
+    player_counter += 1
+  print("Player's total hand value:", player.value)
+  print()
 
-  # Dealing Cards for Dealer the same way for Player at the Beginnning of Game
+  # Card Check Method - checks for duplicate cards drawn and makes program draw another card that is not a duplicate from the dictionary containing the cards drawn for player and dealer
 
   dealer = Hand()
 
@@ -150,10 +138,10 @@ def Blackjack(money):
     print("Use Only Number Characters When Inputing Choice")
     choice = (input("Player enter choice: [draw = 1, stand = 2, double_down = 3]" + "\n"))
         
-    mode = 1
-    while mode == 1:
+    m = 1
+    while m == 1:
       if choice == "1" or "2" or "3":
-        mode += 1
+        m += 1
       else:
         choice = (input("Player enter choice: [draw = 1, stand = 2, double_down = 3]" + "\n"))
       
@@ -163,7 +151,13 @@ def Blackjack(money):
       print("Drawing Card" + '\n')
       player.add_card(deck.deal())
       
-      show_player_cards()
+      player_counter = 0
+      print("Player's cards are:")
+      for i in player.cards:
+        print(player.cards[player_counter])
+        player_counter += 1
+      print("Player's total hand value:", player.value)
+      print()
 
     elif stand == choice:
       print("Stand" + "\n")
@@ -176,10 +170,16 @@ def Blackjack(money):
       print("Drawing Card" + '\n')
       player.add_card(deck.deal())
       
-      show_player_cards()
+      player_counter = 0
+      print("Player's cards are:")
+      for i in player.cards:
+        print(player.cards[player_counter])
+        player_counter += 1
+      print("Player's total hand value:", player.value)
+      print()
       counter += 1
 
-    # Player's Standings with Player.Value Method - when the player is done drawing cards or cannot draw anymore, the value of the hand is being compared with conditions to see if one of them matches 
+    # Player's Standings with Player_Hand_Value Method - when the player is done drawing cards or cannot draw anymore, the value of the hand is being compared with conditions to see if one of them matches 
 
     # Play Agian or Quit Option Function - when the player gets a bust before dealer reveals cards or when finshed a game through the possible outcomes, the player has a choice to play agian or quit (same method idea used when choosing to draw, stand or double down)
 
@@ -195,11 +195,24 @@ def Blackjack(money):
       print("Player's total hand value:", player.value)
       print()
       if choice == stand or choice == double_down:
-        show_dealer_cards()
+        dealer_counter = 0
+        print("Dealer's cards are:")
+        for i in dealer.cards:
+          print(dealer.cards[dealer_counter])
+          dealer_counter += 1
+        print("Dealer's total hand value:", dealer.value)
+        print()
 
     elif player.value == 21:
       print("Blackjack!" + '\n')
-      show_dealer_cards()
+      dealer_counter = 0
+      print("Dealer's cards are:")
+      for i in dealer.cards:
+        print(dealer.cards[dealer_counter])
+        dealer_counter += 1
+      print("Unknown Card")
+      print("Dealer's total hand value:", dealer.value)
+      print()
       counter += 1
       
     
@@ -214,7 +227,13 @@ def Blackjack(money):
      
       dealer.add_card(deck.deal())
 
-      show_dealer_cards()
+      dealer_counter = 0
+      print("Dealer's cards are:")
+      for i in dealer.cards:
+        print(dealer.cards[dealer_counter])
+        dealer_counter += 1
+      print("Dealer's total hand value:", dealer.value)
+      print()
         
     # Win, Lose or Tie and Bet/Money Impact Method - Base on the outcome of the dealer's hand value, the player will win, lose or tie which affects the player's bet (profit or loss) and the new amount of money in the account for next game
 
